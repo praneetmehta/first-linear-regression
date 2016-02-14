@@ -2,7 +2,7 @@
 """
 Created on Sun Feb 14 13:40:16 2016
 
-@author: shubham jha
+@author: home
 """
 
 # -*- coding: utf-8 -*-
@@ -57,12 +57,20 @@ total_init_error=init_error.sum()
 #print "\n total_init_error= " + str(total_init_error)
 
 itr=1
-while flag<2000:
+while flag==1:
     print "Entered loop no-\n" + str(itr)
     hypo=numpy.dot(Xnew, theta) #hypothesis function
     
     J=(1.0/(2*m))*(numpy.square(hypo-Y)) #cost function
     curr_error=J.sum() #total cost
+    
+    if total_init_error-curr_error<0.0001 and total_init_error!=curr_error:
+        flag=0
+        print"difference= " + str(total_init_error-curr_error)
+    if itr>=2000:
+        flag=0
+        print "Operation aborted.The code was taking too long. Try increasing learning rate."
+    
     temp0= theta[0]-(alpha/m)*numpy.sum(hypo-Y)
     temp1=theta[1]-(alpha/m)*numpy.sum((hypo-Y)*X)
     theta[0]=temp0
