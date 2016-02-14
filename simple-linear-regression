@@ -57,31 +57,17 @@ total_init_error=init_error.sum()
 #print "\n total_init_error= " + str(total_init_error)
 
 itr=1
-while flag==1:
-    print "Entered loop \n"
+while flag<2000:
+    print "Entered loop no-\n" + str(itr)
     hypo=numpy.dot(Xnew, theta) #hypothesis function
     
     J=(1.0/(2*m))*(numpy.square(hypo-Y)) #cost function
     curr_error=J.sum() #total cost
-    
-    '''print "CurrError in Loop = " + str(curr_error)
-    print "TotalInitError  in Loop = " + str(total_init_error)'''
-    if total_init_error-curr_error<0.0001 and total_init_error!=curr_error:
-        flag=0
-        print"difference= " + str(total_init_error-curr_error)
-        
-    if curr_error>total_init_error:
-        #print "entered if \n"
-        flag=1
-        
-    elif curr_error<=total_init_error:
-        #print "Inside elif \n"
-        temp0= theta[0]-(alpha/m)*numpy.sum(hypo-Y)
-        temp1=theta[1]-(alpha/m)*numpy.sum((hypo-Y)*X)
-         
-        theta[0]=temp0
-        theta[1]=temp1
-        total_init_error=curr_error
+    temp0= theta[0]-(alpha/m)*numpy.sum(hypo-Y)
+    temp1=theta[1]-(alpha/m)*numpy.sum((hypo-Y)*X)
+    theta[0]=temp0
+    theta[1]=temp1
+    total_init_error=curr_error
         
     total_init_error=curr_error
      
