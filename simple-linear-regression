@@ -1,0 +1,98 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Sun Feb 14 13:40:16 2016
+
+@author: shubham jha
+"""
+
+# -*- coding: utf-8 -*-
+"""
+Created on Sun Feb 14 03:39:51 2016
+
+@author: home
+"""
+
+import numpy
+import matplotlib.pyplot as plt
+
+#print "starting \n"
+#h(x)=a+bX
+a= 2
+b= 2
+theta=numpy.ones(shape=(2,1))
+theta[0]=a #theta[0]=a (basically y-intercept)
+theta[1]=b #theta[1]=b
+q=numpy.loadtxt("C:\Users\home\Desktop\slr02l1.txt") #X
+w=numpy.loadtxt("C:\Users\home\Desktop\slr02l2.txt") #Y
+m=len(q) #total no. of items
+alpha=0.001 #learning rate
+
+Y=numpy.zeros(shape=(m, 1))
+X=numpy.zeros(shape=(m, 1))
+
+for i in range(0,m):
+    Y[i]=w[i]
+    
+for i in range(0,m):
+    X[i]=q[i]
+
+Xnew=numpy.ones(shape=(m, 2))
+
+for i in range(0, m):
+    Xnew[i][1]=q[i]
+
+
+J=numpy.zeros(shape=(m, 1))
+
+#print "ENTERING GRAD DESCENT \n"
+#GRADIENT DESCENT
+#repeat until convergance
+error=0
+flag=1
+
+init_hypo=numpy.dot(Xnew, theta)
+init_error=(1.0/(2*m))*(numpy.square(init_hypo-Y))
+total_init_error=init_error.sum()
+
+#print "\n total_init_error= " + str(total_init_error)
+
+itr=1
+while flag==1:
+    print "Entered loop \n"
+    hypo=numpy.dot(Xnew, theta) #hypothesis function
+    
+    J=(1.0/(2*m))*(numpy.square(hypo-Y)) #cost function
+    curr_error=J.sum() #total cost
+    
+    '''print "CurrError in Loop = " + str(curr_error)
+    print "TotalInitError  in Loop = " + str(total_init_error)'''
+    if total_init_error-curr_error<0.0001 and total_init_error!=curr_error:
+        flag=0
+        print"difference= " + str(total_init_error-curr_error)
+        
+    if curr_error>total_init_error:
+        #print "entered if \n"
+        flag=1
+        
+    elif curr_error<=total_init_error:
+        #print "Inside elif \n"
+        temp0= theta[0]-(alpha/m)*numpy.sum(hypo-Y)
+        temp1=theta[1]-(alpha/m)*numpy.sum((hypo-Y)*X)
+         
+        theta[0]=temp0
+        theta[1]=temp1
+        total_init_error=curr_error
+        
+    total_init_error=curr_error
+     
+    plt.plot(X,hypo)
+    plt.scatter(X, Y, c='r')
+    plt.show()
+    itr=itr+1
+#Loop end
+    
+plt.plot(X,hypo)
+plt.scatter(X, Y, c='r')
+plt.show()    
+    
+print " \n \nHypothesis -" + str(theta[0]) + " + " + str(theta[1]) + "x"
